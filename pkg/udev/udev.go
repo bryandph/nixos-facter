@@ -331,10 +331,10 @@ func Version() (uint64, error) {
 		return 0, fmt.Errorf("failed to parse systemd version from udevadm --version: %w", err)
 	}
 
-	slog.Warn("udev version detected", "version", version)
+	slog.Info("udev version detected", "version", version)
 
 	if udevadmPath, pathErr := exec.LookPath("udevadm"); pathErr == nil {
-		slog.Warn("udevadm command path", "path", udevadmPath)
+		slog.Info("udevadm command path", "path", udevadmPath)
 	}
 
 	return version, nil
