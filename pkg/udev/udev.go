@@ -162,7 +162,7 @@ func NewUdevUsb(env map[string]string) (*Usb, error) {
 		Driver:       env["ID_USB_DRIVER"],
 	}
 
-	modelID, err := parseUint16OrDefault(env, "ID_USB_MODEL_ID")
+	modelID, err := strconv.ParseUint(env["ID_USB_MODEL_ID"], 16, 16)
 	if err != nil {
 		modelID, err = strconv.ParseUint(env["ID_MODEL_ID"], 16, 16)
 		if err != nil {
