@@ -49,6 +49,7 @@ import "C"
 import (
 	"errors"
 	"fmt"
+	"log/slog"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -329,6 +330,8 @@ func Version() (uint64, error) {
 	if err != nil {
 		return 0, fmt.Errorf("failed to parse systemd version from udevadm --version: %w", err)
 	}
+
+	slog.Warn("udev version detected", "version", version)
 
 	return version, nil
 }
