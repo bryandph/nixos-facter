@@ -58,7 +58,7 @@ buildGo124Module (final: {
     in
     ''
       wrapProgram "$out/bin/nixos-facter" \
-          --prefix PATH : "/usr/bin/udevadm:${binPath}"
+          --prefix PATH : "/usr/bin/:${binPath}"
     '';
 
   meta = with lib; {
