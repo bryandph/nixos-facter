@@ -164,17 +164,18 @@ func NewUdevUsb(env map[string]string) (*Usb, error) {
 
 	modelID, err := parseUint16OrDefault(env, "ID_USB_MODEL_ID")
 	if err != nil {
-		modelID, err := strconv.ParseUint(env["ID_MODEL_ID"], 16, 16)
+		modelID, err = strconv.ParseUint(env["ID_MODEL_ID"], 16, 16)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse model id: %w", err)
 		}
+		modelID = uint16(modelID)
 	}
 
 	result.ModelID = uint16(modelID)
 
 	vendorID, err := strconv.ParseUint(env["ID_USB_VENDOR_ID"], 16, 16)
 	if err != nil {
-		vendorID, err := strconv.ParseUint(env["ID_VENDOR_ID"], 16, 16)
+		vendorID, err = strconv.ParseUint(env["ID_VENDOR_ID"], 16, 16)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse vendor id: %w", err)
 		}
@@ -184,7 +185,7 @@ func NewUdevUsb(env map[string]string) (*Usb, error) {
 
 	revision, err := parseUint16OrDefault(env, "ID_USB_REVISION")
 	if err != nil {
-		revision, err := parseUint16OrDefault(env, "ID_REVISION")
+		revision, err = parseUint16OrDefault(env, "ID_REVISION")
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse revision: %w", err)
 		}
