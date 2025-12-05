@@ -3,6 +3,7 @@
   systemdMinimal,
   hwinfo,
   gcc,
+  makeWrapper,
   pkg-config,
   stdenv,
   buildGo124Module,
@@ -35,6 +36,7 @@ buildGo124Module (final: {
 
   nativeBuildInputs = [
     gcc
+    makeWrapper
     pkg-config
     versionCheckHook
   ];
@@ -48,9 +50,16 @@ buildGo124Module (final: {
   ];
 
   doInstallCheck = true;
-  # Note: We intentionally don't wrap with systemdMinimal in PATH
-  # to ensure the program uses the system's udevadm instead of nixpkgs version
-  postInstall = '''';
+  postInstall =
+    let
+      binPath = lib.makeBinPath [
+        systemdMinimal
+      ];
+    in
+    ''
+      wrapProgram "$out/bin/nixos-facter" \
+          --prefix PATH : "/usr/bin/udevadm:${binPath}"
+    '';
 
   meta = with lib; {
     description = "nixos-facter: declarative nixos-generate-config";
