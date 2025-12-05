@@ -168,7 +168,6 @@ func NewUdevUsb(env map[string]string) (*Usb, error) {
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse model id: %w", err)
 		}
-		modelID = uint16(modelID)
 	}
 
 	result.ModelID = uint16(modelID)
