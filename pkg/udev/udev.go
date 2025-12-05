@@ -333,5 +333,9 @@ func Version() (uint64, error) {
 
 	slog.Warn("udev version detected", "version", version)
 
+	if udevadmPath, pathErr := exec.LookPath("udevadm"); pathErr == nil {
+		slog.Warn("udevadm command path", "path", udevadmPath)
+	}
+
 	return version, nil
 }
