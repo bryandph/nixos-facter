@@ -134,19 +134,6 @@ type Usb struct {
 	Driver       string
 }
 
-func parseUint16OrDefault(env map[string]string, key string) (uint16, error) {
-	if value := env[key]; value != "" {
-		parsed, err := strconv.ParseUint(value, 16, 16)
-		if err != nil {
-			slog.Warn("failed to parse udev key value", "key", key, "value", value, "error", err)
-			return 0, err
-		}
-		return uint16(parsed), nil
-	}
-	slog.Warn("udev key is empty or not found", "key", key)
-	return 0, nil
-}
-
 func NewUdevUsb(env map[string]string) (*Usb, error) {
 	if bus := env["ID_BUS"]; bus != "usb" {
 		return nil, fmt.Errorf("invalid bus: %s", bus)
@@ -182,9 +169,9 @@ func NewUdevUsb(env map[string]string) (*Usb, error) {
 
 	result.VendorID = uint16(vendorID)
 
-	revision, err := parseUint16OrDefault(env, "ID_USB_REVISION")
+	revision, err := strconv.ParseUint(env["ID_USB_REVISION"], 16, 16)
 	if err != nil {
-		revision, err = parseUint16OrDefault(env, "ID_REVISION")
+		revision, err = strconv.ParseUint(env["ID_REVISION"], 16, 16)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse revision: %w", err)
 		}
